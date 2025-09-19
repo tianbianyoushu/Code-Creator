@@ -23,7 +23,7 @@
   const adComplete = document.getElementById('ad-complete');
   const unlockDownloadsButton = document.getElementById('unlock-downloads');
 
-  const API_ENDPOINT = '/api/process-audio';
+  const API_ENDPOINT = window.__AUTOSCORE_API__ || '/api/process-audio';
 
   const SAMPLE_PIANO_XML = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
