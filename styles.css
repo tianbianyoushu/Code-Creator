@@ -71,6 +71,27 @@ main {
   gap: 1rem;
 }
 
+.mode-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.mode-selector__label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.mode-selector__select {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.02);
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
 .dropzone {
   display: flex;
   flex-direction: column;

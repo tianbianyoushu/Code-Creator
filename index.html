@@ -21,6 +21,13 @@
     <section class="panel" id="upload-panel">
       <h2>1. 音声ファイルをアップロード</h2>
       <form id="upload-form" class="upload-form">
+        <div class="mode-selector">
+          <label class="mode-selector__label" for="score-mode">生成したい楽譜</label>
+          <select id="score-mode" class="mode-selector__select">
+            <option value="piano">ピアノ譜（五線譜）</option>
+            <option value="guitar">ギターTAB譜</option>
+          </select>
+        </div>
         <label for="audio-input" class="dropzone" id="dropzone">
           <span class="dropzone__icon">🎵</span>
           <span class="dropzone__text">MP3 / WAV ファイルをここにドラッグ&ドロップ、またはクリックして選択</span>
@@ -43,7 +50,7 @@
 
     <section class="panel" id="download-panel" hidden>
       <h2>3. 楽譜をダウンロード</h2>
-      <p>ダウンロード前に広告視聴が必要です。</p>
+      <p>ダウンロード前に広告視聴が必要です。デモ環境では5秒のカウントダウン後に有効化されます。</p>
       <button class="primary-button" id="download-trigger" disabled>ダウンロード</button>
       <div id="download-links"></div>
     </section>
