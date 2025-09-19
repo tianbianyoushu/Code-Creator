@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自動採譜デモ</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__text">
+      <h1>音源アップロードで楽譜を自動生成</h1>
+      <p>デモフロー：音声アップロード → 解析 → 楽譜プレビュー → 広告視聴後にダウンロード</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" id="upload-panel">
+      <h2>1. 音声ファイルをアップロード</h2>
+      <form id="upload-form" class="upload-form">
+        <label for="audio-input" class="dropzone" id="dropzone">
+          <span class="dropzone__icon">🎵</span>
+          <span class="dropzone__text">MP3 / WAV ファイルをここにドラッグ&ドロップ、またはクリックして選択</span>
+          <input id="audio-input" type="file" accept="audio/mpeg,audio/wav" hidden>
+        </label>
+        <button type="submit" class="primary-button" id="process-button">解析を開始</button>
+      </form>
+      <p class="status" id="status-label">ファイルを選択して解析を開始してください。</p>
+      <div class="progress" id="progress" hidden>
+        <div class="progress__bar" id="progress-bar"></div>
+      </div>
+    </section>
+
+    <section class="panel panel--preview" id="preview-panel" hidden>
+      <h2>2. 楽譜プレビュー</h2>
+      <div id="preview-subtitle">アップロードした音源から生成された楽譜のサンプルです。</div>
+      <div id="osmd-container" class="sheet"></div>
+      <p class="note">※自動採譜エンジンのデモとしてサンプル楽曲を表示しています。</p>
+    </section>
+
+    <section class="panel" id="download-panel" hidden>
+      <h2>3. 楽譜をダウンロード</h2>
+      <p>ダウンロード前に広告視聴が必要です。</p>
+      <button class="primary-button" id="download-trigger" disabled>ダウンロード</button>
+      <div id="download-links"></div>
+    </section>
+  </main>
+
+  <div class="modal" id="ad-modal" hidden>
+    <div class="modal__overlay"></div>
+    <div class="modal__body" role="dialog" aria-labelledby="ad-title" aria-modal="true">
+      <button class="modal__close" id="close-modal" aria-label="広告を閉じる">×</button>
+      <h3 id="ad-title">スポンサー動画</h3>
+      <div class="ad-player" id="ad-player">
+        <p id="ad-instruction">視聴開始ボタンを押すと広告が再生されます。</p>
+        <button class="primary-button" id="start-ad">視聴開始</button>
+        <div class="countdown" id="countdown" hidden>
+          <div class="spinner" aria-hidden="true"></div>
+          <p><span id="countdown-number">5</span> 秒でダウンロードが可能になります。</p>
+        </div>
+        <div class="ad-complete" id="ad-complete" hidden>
+          <p>視聴ありがとうございます！</p>
+          <button class="primary-button" id="unlock-downloads">ダウンロードリンクを表示</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <small>© 2024 AutoScore Demo</small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay/build/opensheetmusicdisplay.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-1BIgBStqSXZo1bah2hnXP2IK9CXXPLXK01Tn+p7Yrf8fJtA7cbQAh5bF4zBwWXPrZPgFMvfmX7drGy1Q83HLdg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
