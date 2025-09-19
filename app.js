@@ -308,6 +308,36 @@
     }
   };
 
+  const isHttpUrl = (value = '') => /^https?:/i.test(value);
+
+  const configureDownloadAnchor = (anchor, { url, type }) => {
+    anchor.href = url;
+    if (type) {
+      anchor.dataset.type = type;
+    } else {
+      delete anchor.dataset.type;
+    }
+
+    if (isHttpUrl(url)) {
+      anchor.target = '_blank';
+      anchor.rel = 'noopener noreferrer';
+    } else {
+      anchor.removeAttribute('target');
+      anchor.removeAttribute('rel');
+    }
+  };
+
+  const triggerPrimaryDownload = () => {
+    window.requestAnimationFrame(() => {
+      const links = downloadLinks.querySelectorAll('a.download-link');
+      if (!links.length) {
+        return;
+      }
+      const candidate = downloadLinks.querySelector("a[data-type='pdf']") || links[0];
+      candidate.click();
+    });
+  };
+
   const deriveFilename = (source, fallbackExtension) => {
     if (!source) {
       return `autoscore-output.${fallbackExtension}`;
@@ -439,7 +469,7 @@
     const pdfUrl = URL.createObjectURL(pdfBlob);
     state.createdObjectUrls.push(pdfUrl);
     const pdfLink = document.createElement('a');
-    pdfLink.href = pdfUrl;
+    configureDownloadAnchor(pdfLink, { url: pdfUrl, type: 'pdf' });
     pdfLink.download = `autoscore-demo-${sample.mode}.pdf`;
     pdfLink.className = 'download-link';
     pdfLink.textContent = 'PDF をダウンロード';
@@ -451,7 +481,7 @@
     const xmlUrl = URL.createObjectURL(xmlBlob);
     state.createdObjectUrls.push(xmlUrl);
     const xmlLink = document.createElement('a');
-    xmlLink.href = xmlUrl;
+    configureDownloadAnchor(xmlLink, { url: xmlUrl, type: 'musicxml' });
     xmlLink.download = `autoscore-demo-${sample.mode}.musicxml`;
     xmlLink.className = 'download-link';
     xmlLink.textContent = 'MusicXML をダウンロード';
@@ -461,11 +491,13 @@
     const midiUrl = URL.createObjectURL(midiBlob);
     state.createdObjectUrls.push(midiUrl);
     const midiLink = document.createElement('a');
-    midiLink.href = midiUrl;
+    configureDownloadAnchor(midiLink, { url: midiUrl, type: 'midi' });
     midiLink.download = `autoscore-demo-${sample.mode}.mid`;
     midiLink.className = 'download-link';
     midiLink.textContent = 'MIDI をダウンロード';
     downloadLinks.appendChild(midiLink);
+
+    triggerPrimaryDownload();
   };
 
   const renderDownloadLinks = (result) => {
@@ -474,14 +506,13 @@
     if (result.source === 'api' && result.downloads && result.downloads.length > 0) {
       result.downloads.forEach((item) => {
         const anchor = document.createElement('a');
-        anchor.href = item.url;
+        configureDownloadAnchor(anchor, item);
         anchor.download = item.filename || '';
-        anchor.target = '_blank';
-        anchor.rel = 'noopener noreferrer';
         anchor.className = 'download-link';
         anchor.textContent = item.label || labelFromType(item.type);
         downloadLinks.appendChild(anchor);
       });
+      triggerPrimaryDownload();
       return;
     }
 
